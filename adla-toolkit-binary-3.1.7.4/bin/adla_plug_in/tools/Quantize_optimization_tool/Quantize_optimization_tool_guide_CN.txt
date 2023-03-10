@@ -1,0 +1,100 @@
+1、简介
+    Quantize_parameter_test.py用来遍历当前支持的所有量化算法参数的一个脚本（目前还在实验测试阶段）。
+    当前脚本中罗列出了'min-max','kl_asymm_divergence','kl_symm_divergence','percentile','moving-avg','mle'等量化算法的一些
+    常用参数数。 在遍历这些量化参数时，我们将模型转换/量化后的中间层IR保存成quantized tflite模型，并使用提供的原始模型的输入对应
+    的npy文件，对quantized tflite进行前向推理，然后跟原始模型的输出npy进行对比，输出余弦相似度、欧氏距离等指标。如果客户的模型有
+    其他的判断指标，如SNR、MSE等，也可以基于脚本去做修改。
+
+2、使用介绍
+    1.修改点:
+        a、设置adla_tool路径
+            '''Model Conversion Toolpath'''
+            self.adla_tool_path="/data/xxx/adla-toolkit-binary-1.6.10.3"
+
+        b、设置转换模型的相关信息
+            '''Quantify model information '''
+            self.mdoel_type='tflite'
+            self.model_path='./mnv1_fuse3_256p_w256xh144.tflite'
+            self.inputs ="input_1"
+            self.input_shapes='144,256,3'
+            self.quant_type='int8'
+            self.source_file='/xxx/pose_detection/FLIC/dataset.txt'
+            self.channel_mean_value='123.68,116.779,103.939,127.5'
+            self.iteration=200
+            self.outdir='./'
+            self.disable_per_channel=False
+            '''Quantify model information'''
+
+        c、提供原始模型的输入输出npy文件
+            使用原始模型推理时，单张图片对应的输入输出npy文件
+            '''The input and output of the original model'''
+            self.input_npy_path=['./array_test_0.npy']
+            self.output_npy_path=['./output_0.npy', './output_1.npy']
+            '''The input and output of the original model'''
+            Note：原始模型的格式为nchw时，输入输出请先转置成nhwc格式再保存npy。
+
+    2.其他信息：
+        包含：量化算法类型、各个量化算法对应的常用参数。这部分内容一般不需要修改。
+        '''Quantization parameter information'''
+        self.quantize_algos=["min-max","percentile","hist_percentile","hist_asymm_percentile","moving-avg","his_moving_avg","kl_asymm_divergence","kl_symm_divergence"]
+        self.moving_alphas = [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9] #for moving_alphas algo
+        self.percentiles = [0.99,0.9992,0.9993,0.9994,0.9995,0.9996,0.9997,0.9998,0.9999,0.99999] #for percentiles algo
+        self.symm_optimize_algos = ['kl-dis','mse-dis'] #for kl_symm_divergence algo
+        self.asymm_optimize_algos = ['kl-dis','cos-dis','js-dis'] #for kl_asymm_divergence algo
+        self.neg_scales = [0, 0.001, 0.01, 0.1, 1, 1.2, 1.5]
+        self.num_histogram_bin = [2048, 4096, 8192 , 12288,16384]
+        self.kl_thres_sizes = [2048, 4096, 8192, 12288, 16384]
+        self.iterations = [100,200,1,10,20,50,300,500]
+        self.weights_quantize_algos=['mle','min-max']
+        self.weights_optimize_algos = ['cos-dis', 'js-dis','kl-dis'] #for wegiths mle algo
+        self.weights_thres_sizes = [2048, 4096, 8192, 12288, 16384]
+        self.weights_neg_scales = [0.9991,0.9992,0.9993,0.9994,0.9995,0.9996,0.9997,0.9998,0.9999,0.99999]
+        '''Quantization parameter information'''
+
+        Note:当前有设置转出的模型，输入输出type均为float32,所以能直接使用原始模型对应的输入npy
+             对应命令：--inference-input-type 'float32' --inference-output-type 'float32'
+        self.cmd_line_base = "{} --model-type {} --model {} --inputs {} --input-shapes {} \
+            --quantize-dtype {} --disable-per-channel {} --source-file {} \
+            --channel-mean-value {} --outdir {} --inference-input-type 'float32' \
+            --inference-output-type 'float32' ".format(self.adla_convert_path, self.mdoel_type, self.model_path, self.inputs,\
+            self.input_shapes, self.quant_type,self.disable_per_channel, self.source_file, self.channel_mean_value, self.outdir)
+
+    3.其他
+        运行结果保存路径：
+        self.result="test_result.txt"
+
+    4.结果
+        txt中保存结果如下：
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        /xxxx/adla-toolkit-binary-1.6.10.3/bin/adla_convert --model-type tflite --model ./mnv1_fuse3_256p_w256xh144.tflite --inputs input_1 --input-shapes 144,256,3 --quantize-dtype int8 --disable-per-channel False --source-file /xxxx/pose_detection/FLIC/dataset.txt --channel-mean-value 123.68,116.779,103.939,127.5 --outdir ./ --inference-input-type 'float32' --inference-output-type 'float32' --iterations 10 --quantize-algo moving-avg --moving-alpha 0.5
+        output[0]:cosine similarity:0.999242,Euclidean distance:0.903822
+        output[1]:cosine similarity:0.995295,Euclidean distance:1.331981
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        /xxxx/adla-toolkit-binary-1.6.10.3/bin/adla_convert --model-type tflite --model ./mnv1_fuse3_256p_w256xh144.tflite --inputs input_1 --input-shapes 144,256,3 --quantize-dtype int8 --disable-per-channel False --source-file /xxxx/pose_detection/FLIC/dataset.txt --channel-mean-value 123.68,116.779,103.939,127.5 --outdir ./ --inference-input-type 'float32' --inference-output-type 'float32' --iterations 10 --quantize-algo moving-avg --moving-alpha 0.6
+        output[0]:cosine similarity:0.999276,Euclidean distance:0.881915
+        output[1]:cosine similarity:0.995967,Euclidean distance:1.239973
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+3、使用建议
+    因为当前脚本还处于实验测试阶段，暂时先提供一些使用建议
+
+    1.原始模型的输入提供方式：
+        a.直接选取单张图片做完前处理后保存npy文件，并跑出原始模型对应该输入的输出结果，作为脚本的对比文件。
+    2.最优参数筛选建议
+        通过该脚本筛选出的最优参数跟使用最优参数转换后的模型通过完整的验证集测试的结果不一定完全成正比关系。
+        当前已有的测试，有的模型能通过该脚本筛出最优参数，有的模型通过该脚本筛选的最优参数在验证集上表现不一定最优。
+    建议：
+    1、如果模型的验证集数据量不大，建议在run_tflite接口中将验证代码集成进去，然后直接保存验证集对应的结果。这种基于验证集筛选出的量化转换参数是真实有效的。
+    2、参数搜索建议：
+       第一种方式：
+         a、修改Quantization parameter information，将两组参数设置为self.quantize_algos=['min-max'],self.weights_quantize_algos=['min-max']，此时会遍历不同数据集的量化效果，优先选取一个在min-max量化下的最优量化参数iterations。
+         b、修改self.iteration的值为a步骤中搜索到的最优值，再设置self.quantize_algos=["percentile","hist_percentile","hist_asymm_percentile","moving-avg","his_moving_avg","kl_asymm_divergence","kl_symm_divergence"],self.weights_quantize_algos=['mle']进行第二轮搜索。
+       第二种方式：
+         根据经验，对于大部分分类模型表现比较好的算法参数设置为：
+         self.quantize_algos=["percentile","hist_percentile","hist_asymm_percentile"]
+         self.iterations = [100]
+         self.weights_quantize_algos=['mle']
+         并将这些算法集成在Quantize_optimization_tool_simple_version.py中，可以直接运行此简易版脚本进行搜索。
+         对于目标检测类模型，如yolovs等模型，数据集参数设置为self.iterations = [10]，模型精度表现比较好。
+       第三种方式：
+         直接运行此脚本Quantize_optimization_tool.py遍历搜索。

@@ -1,0 +1,8 @@
+{
+    "disable_fusion": 0,
+    "disable_feature_compression": 0,
+    "disable_weight_compression": 0,
+    "disable_memory_reuse": 0,
+    "dump_model_info": 1,
+    "include_debug_info": 1
+}

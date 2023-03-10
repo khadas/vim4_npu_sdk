@@ -1,0 +1,12 @@
+*.so.* filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+convert filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+adla_convert filter=lfs diff=lfs merge=lfs -text
+*.pb filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+*.weights filter=lfs diff=lfs merge=lfs -text
+*.mlmodel filter=lfs diff=lfs merge=lfs -text
+*.tar filter=lfs diff=lfs merge=lfs -text
+adla-toolkit-binary-3.1.7.4/python/convert filter=lfs diff=lfs merge=lfs -text
+adla-toolkit-binary-3.1.7.4/bin/adlalib/adla_convert filter=lfs diff=lfs merge=lfs -text

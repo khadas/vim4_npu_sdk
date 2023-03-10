@@ -1,0 +1,262 @@
+############################################################################
+Release notes for Adla 3.1.7.4
+
+Bug Fixing:
+    1. fix strided_slice axes is none adaptation issue
+
+Feature Refine:
+    1. modify the axi sram size of PID0X005
+
+
+New Features:
+    1. Pytorch framework add Support unflatten/scaled_dot_product_attention
+
+############################################################################
+
+############################################################################
+Release notes for Adla 3.0.7.4
+
+Bug Fixing:
+    1. fix int16 perlayer quantization issue
+    2. fix issue with prelu in some scenarios
+    3. fix issue with sub in some scenarios
+    4. fix issue with suqeeze in some scenarios
+    5. fix issue with broadcast_to in some scenarios
+    6. fix issue with slice in some scenarios
+    7. Adapt to support batch_matmul certain scenarios
+
+Feature Refine:
+    1.  Upgrade pytorch to 2.0.0
+    2.  Upgrade tensorflow to 2.15.0
+    3.  keras upgraded to 3.0.5
+    4.  Optimized Quantize_optimization_tool
+    5.  Refine gather_nd adaptation
+    6.  Refine gather/take adaptation
+    7.  Update Compiler to v0.7.4
+
+
+New Features:
+    1. Release adla_visualization_tool
+    2. Supports model conversion over 2G
+    3. Release NNIDE_tool
+
+############################################################################
+
+############################################################################
+Release notes for Adla 2.1.11.0
+
+Bug Fixing:
+    1. Solve the problem of excessive memory consumption
+    2. fix problems with dwconv in some scenarios
+    3. fix problems with deconv in some scenarios
+    4. fix problems with matmul in some scenarios
+    5. fix problems with gather_nd in some scenarios
+    6. fix tflite frontend fill issues
+    7. fix squeeze operator issue without axis parameter
+    8. fix top_k output is int64 issue
+    9. fix equal/not_equal/less/greater/greater_equal/less_equal int16 quantization issue
+    10. fix conv1d issue
+
+Feature Refine:
+    1.  Optimized perlayer quantization algorithm
+    2.  Optimize and improve addition and subtraction adaptation
+
+New Features:
+    1. Release adla_visualization_tool
+    2. Add Support SQUARED_DIFFERENCE、broadcast_to_like
+
+############################################################################
+
+
+############################################################################
+Release notes for Adla 2.0.11.0
+
+Bug Fixing:
+    1.  fix minimum/maximum result error issue
+    2.  fix add/mul/sub/div shape mismatch issue
+    3.  fix gather issue
+
+Feature Refine:
+    1.  Upgrade pytorch to 1.12.0
+    2.  Upgrade tensorflow to 2.11.1
+    3.  Upgrade onnx to 1.12.0
+    4.  Upgrade Paddle to 2.4.2
+    5.  Support dynamic control of batchmatmul unfold
+    6.  Refine onnx's HardSigmoid adaptation
+    7.  Update Compiler to v0.6.0
+
+New Features:
+    1. Add Support fo hist_asymm_percentile/history_moving-avg feature quantization
+    2. Integrate NNAPI tflite_refactorer_tool
+    3. Add support InstanceNormalization/Floor_mod/Gather
+    4. Add Support convert broadcast_to(tflite Frontend)
+    5. Add Support Coreml framework
+    6. Add Support group_deconv、Scatter_nd
+
+############################################################################
+
+############################################################################
+Release notes for Adla 1.6.10.3
+
+Bug Fixing:
+    1.  fix the prelu weights setting issue (prelu after dense)
+    2.  fix dequantize  input get error  issue (tflite frontend,dequantize after densify)
+
+Feature Refine:
+    1.  Redefine the prelu's prelu parsing
+    2.  Redefine the caffe's tile parsing
+    3.  Update Compiler to v0.5.3
+
+New Features:
+    1.  Add support uint8 quantization
+    2.  Add support Mod、AdaptPool1d、Cumsum、Multinomial、scatter
+    3.  Add support export template code
+    4.  Added weights quantization algorithm(mle,perchannel)
+    5.  Integrated adla Info Tool
+    6.  Add support specifying output nodes when convert onnx/tflite model
+    7.  Add Support for asymmetric percentile feature quantization
+    8.  Integrated nnsdk into tools
+    9.  Add Support Caffe2
+    10. Added Featrue quantization algorithm(hist_percentile)
+
+############################################################################
+
+############################################################################
+Release notes for Adla 1.5.10.2
+
+Bug Fixing:
+    1.  fix the error when the multi-input model provides a single set of inputs for quantization
+    2.  fix caffe frontend scale issue
+    3.  fix onnx frontend concat's inputs has different shape issues
+    4.  fix tflite frontend: fullconnected with dynamic weights issue
+
+Feature Refine:
+    1.  Refine clip to relu6 when min=0 and max=6
+
+New Features:
+    1.  Added weights quantization algorithm(mle,perlayer)
+    2.  Added Support Tile(caffe Frontend),LayerNormalization
+    3.  Added Support reshape_as(pytorch Frontend)
+
+############################################################################
+
+############################################################################
+Release notes for Adla 1.4.0.9
+
+Bug Fixing:
+    1.  fix caffe deconv kernel layout format issue
+    2.  fix concat operators has const input issue
+    3.  fix tranpose params has negative number that causes quantize fail issue
+    4.  fix the quantization problem caused by the const input order of div/sub operator
+
+Feature Refine:
+    1.  Refine ir conversion process
+    2.  Optimized the conversion of group conv
+
+New Features:
+    1.  Added feature quantization algorithm(kl/percentile/moving-avg)
+
+############################################################################
+
+
+############################################################################
+Release notes for Adla 1.2.0.9
+
+Bug Fixing:
+    1.  fix Matmul need transpose issue
+    2.  fix slice axes param is none issue
+    3.  fix gather_nd/take has const input issue
+    4.  fix reduce_max/min/sum/mean keepdims params issue
+    5.  fix conv/conv_transpose has dilation_rata params issue
+    6.  fix matmul has transpose_a transpose_b params issue
+    7.  fix sub/add/mul/div/concat operator's input has different shape issue
+    8.  fix shape has different out type issue
+    9.  fix where operator has different input cases issue
+    10. fix dense(tflite) has variable weights issue
+
+Feature Refine:
+
+New Features:
+    1.  Support Quantized pytorch model
+    2.  Support different types of input models by add params --dtypes
+    3.  Add Support arange/deconv1d /logical_not
+    4.  Add Support mirror_pad
+
+############################################################################
+
+############################################################################
+Release notes for Adla 1.0.0.7
+
+Bug Fixing:
+    1.  fix concat include param input issue
+    2.  fix reshape param exist multiple 0 issue
+    3.  fix greater/less/equal/power/logical_and/logical_or operator has const input issue
+    4.  fix split/concat axis <0 issue
+    5.  fix slice has axes param issue
+    6.  fix caffe lrn result error issue
+
+Feature Refine:
+
+New Features:
+    1.  Upgrade pytorch to 1.7.0
+    2.  Upgrade tensorflow to 2.6.5
+    3.  Upgrade onnx to 1.10.2
+    4.  Support Paddle(2.1.3)
+    5.  Add Support greater_equal/greater_nd/floor_divide
+
+
+############################################################################
+Release notes for Adla 0.9.3.6
+
+Bug Fixing:
+    1.  fix reshape convert issue
+    2.  fix expand axis error issue
+
+Feature Refine:
+
+New Features:
+    1.  Support lstm(tflite,onnx,pytorch)
+
+############################################################################
+Release notes for Adla 0.9.2.4
+
+Bug Fixing:
+    1.  fix 4-D  softmax issue
+    2.  fix concat violate the same scale constraint issue
+    3.  fix slice/take operator issu
+    4.  fix reduce_sum issue
+    5.  fix clip issue(onnx model clip not exist max value)
+    6.  fix upsampling layer issue(onnx)
+    7.  fix Softplus frontend map issue(onnx)
+    8.  fix fully_connected frontend no_bais issue(tflite)
+    9.  fix transpose/squeeze/resize issue
+
+Feature Refine:
+
+New Features:
+    1.  Support float tflite model
+    2.  Add Support abs/reduce_max operator
+    3.  Add Support GlobalMaxPool2d,depth_to_space,Space_to_depth,negative,matmul,log
+    4.  Add Support argmin,argmax,logical_and,logical_or,logical_xor,floor,reduce_prod,sin,l2_normalize
+
+############################################################################
+Release notes for Adla 0.9.1.2
+
+New Features:
+    1.  Support Generate specified target adla file for the model
+    2.  Support non-4D input model
+    3.  Support ops:log_softmax(pytorch, onnx), conv1d(pytorch, onnx)
+
+############################################################################
+Release notes for Adla 0.9.0.0
+
+New Features:
+    1.  Support Keras model
+    2.  Support onnx(1.6.0) model
+    3.  Support mxnet(1.6.0) model
+    4.  Support quantized tflite model
+    5.  Support Tensorflow(2.5.0) model
+    6.  Support pytorch/quantized  pytorch(1.4.0) model
+    7.  Support darknet(https://github.com/pjreddie/darknet) model
+    8.  Support Caffe(https://github.com/BVLC/caffe) model
+
