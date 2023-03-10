@@ -1,0 +1,1 @@
+cmd='/data/dengliu/01_tvm/adla_tool_v1.0/cmake/libs/../../3rdparty/libbacktrace/configure;--prefix=/data/dengliu/01_tvm/adla_tool_v1.0/build/libbacktrace;--with-pic;CC=/usr/bin/cc;CFLAGS=-O2 -Wall -fPIC ;LDFLAGS=;CPP=/usr/bin/cc -E;NM=/usr/bin/nm;STRIP=/usr/bin/strip;--host='

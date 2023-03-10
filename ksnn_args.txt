@@ -1,0 +1,13 @@
+--model-name yolov8n 
+--model-type onnx 
+--model yolov8n.onnx 
+--inputs "images" 
+--input-shapes  "3,640,640" 
+--dtypes "float32" 
+--quantize-dtype int8 
+--outdir onnx_output 
+--channel-mean-value "0,0,0,255" 
+--source-file dataset.txt 
+--iterations 1 
+--batch-size 1 
+--kboard VIM4
